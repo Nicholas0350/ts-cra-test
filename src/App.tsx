@@ -1,4 +1,5 @@
 import React, { ReactElement, ReactNode } from 'react';
+import { isShorthandPropertyAssignment } from 'typescript';
 import './App.css';
 
 // Conventional Props
@@ -21,7 +22,31 @@ function Container({
   return <div><h1>{heading}</h1>{children}</div>
 }
 
-Container.defaultProps =  defaultContainerProps;
+Container.defaultProps = defaultContainerProps;
+
+// Functional Props
+//component is a button but what is rendered by component is a function
+
+function TextWithNumber({
+  children
+}: {
+  children: (num: number) => ReactNode
+}) {
+  const [state, stateSet] = React.useState<number>(1)
+
+  return (
+    <div>
+      <div>
+        {children(state)}
+      </div>
+      <div>
+        <button onClick={() => stateSet(state + 1)}>Add</button>
+      </div>
+    </div>
+  )
+}
+
+
 
 function App() {
   return (
@@ -31,7 +56,8 @@ function App() {
         <strong>Hi</strong>
       </HeadingWithContent>
       <Container>Foo</Container>
-     
+      <TextWithNumber>{(num: number) => <div>Todays number is {num}</div>}</TextWithNumber>
+
     </div>
   );
 }
