@@ -27,19 +27,21 @@ Container.defaultProps = defaultContainerProps;
 // Functional Props
 //component is a button but what is rendered by component is a function
 // with a header prop
+// make header optional
+
 
 function TextWithNumber({
   header,
   children
 }: {
-  header: (num: number) => ReactNode
+  header?: (num: number) => ReactNode
   children: (num: number) => ReactNode
 }) {
   const [state, stateSet] = React.useState<number>(1)
 
   return (
     <div>
-      <h2>{header(state)}</h2>
+      {header && <h2>{header?.(state)}</h2>}
       <div>
         {children(state)}
       </div>
@@ -60,7 +62,7 @@ function App() {
         <strong>Hi</strong>
       </HeadingWithContent>
       <Container>Foo</Container>
-      <TextWithNumber header={(num: number) => <span>Header {num}</span>}  >
+      <TextWithNumber>
         {(num: number) => <div>Todays number is {num}</div>}</TextWithNumber>
 
     </div>
