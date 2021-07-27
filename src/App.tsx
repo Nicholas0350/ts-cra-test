@@ -1,3 +1,4 @@
+import { render } from '@testing-library/react';
 import React, { ReactElement, ReactNode } from 'react';
 import { isShorthandPropertyAssignment } from 'typescript';
 import './App.css';
@@ -53,6 +54,28 @@ function TextWithNumber({
 }
 
 
+// Generics around Functions
+// manages list & call render on every item on list
+
+function List<ListItem>({
+  items,
+  render,
+}: {
+  items: ListItem[],
+  render: (item: ListItem) => ReactNode;
+}) {
+  return (
+    <ul>
+      {items.map((item, index) => (
+        <li key={index}>
+          {render(item)}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+
 
 function App() {
   return (
@@ -63,9 +86,14 @@ function App() {
       </HeadingWithContent>
       <Container>Foo</Container>
       <TextWithNumber>
-        {(num: number) => <div>Todays number is {num}</div>}</TextWithNumber>
-
-    </div>
+        {(num: number) => <div>Todays number is {num}</div>}
+      </TextWithNumber>
+      <List
+        items={["Jill", "st", "John"]}
+        render={(item: string) => <div>{item.toLowerCase()}</div>}
+      >
+      </List>
+    </div >
   );
 }
 
